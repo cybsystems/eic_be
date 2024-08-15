@@ -1,12 +1,14 @@
-module.exports = (sequelize, Sequelize) => {
+const UsersModel = (sequelize, Sequelize) => {
   const Users = sequelize.define("users", {
     email: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     password: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
   });
 
   return Users;
 };
+
+module.exports = UsersModel;
