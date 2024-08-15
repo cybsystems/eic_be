@@ -25,7 +25,7 @@ const createUser = async (req, res) => {
       firstName,
       lastName,
       password: hashedPassword,
-      role,
+      role:"staff",
     };
 
     // Create the user in the database
@@ -89,7 +89,7 @@ const deleteUser = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    const data = await User.findAll();
+    const data = await Users.findAll({where:{role:"staff"}});
     res.send(data);
   } catch (error) {
     res.status(500).send({

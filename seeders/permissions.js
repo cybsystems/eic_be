@@ -2,9 +2,9 @@
 const Permission = require('../app/models').permissions; // Adjust the path as needed
 
 const initialPermissions = [
-  { name: 'see reports', description: 'Allows user to see reports' },
-  { name: 'stock management', description: 'Allows user to manage stock' },
-  { name: 'stock return', description: 'Allows user to manage returned stock' },
+  { name: 'See Reports', description: 'Allows user to see reports' },
+  { name: 'Stock Management', description: 'Allows user to manage stock' },
+  { name: 'Stock Return', description: 'Allows user to manage returned stock' },
 
   // Add more permissions as needed
 ];
