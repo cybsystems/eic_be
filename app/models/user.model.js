@@ -6,9 +6,17 @@ const UserModel = (sequelize, Sequelize) => {
     password: {
       type: Sequelize.STRING,
     },
+    firstName: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+    lastName: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
     role: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
       defaultValue: "admin", // default role
     },
   });
