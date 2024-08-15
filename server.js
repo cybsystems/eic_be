@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 const db = require("./app/models");
 db.sequelize.sync()
 
-const userRoutes=require("./app/routes/users.routes");
+const userRoutes=require("./app/routes/user.routes");
 app.use('/api/users', userRoutes);
 
 
