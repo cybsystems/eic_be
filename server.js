@@ -27,8 +27,6 @@ db.sequelize
   .then(async () => {
     try {
       await seedPermissions();
-
-   
     } catch (error) {
       console.error("Error syncing database:", error);
     }
@@ -36,10 +34,13 @@ db.sequelize
   .catch((error) => {
     console.error("Error syncing database:", error);
   });
-  const userRoutes = require("./app/routes/user.routes");
-  app.use("/api/users", userRoutes);
+const userRoutes = require("./app/routes/user.routes");
+const permissionRoutes = require("./app/routes/permission.routes");
 
-  const PORT = process.env.PORT || 8080;
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
-  });
+app.use("/api/users", userRoutes);
+app.use("/api/permissions", permissionRoutes);
+
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+});
