@@ -1,10 +1,9 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const db = require("../../models");
-const Users=db.users;
-const Permission=db.permissions;
-const UserPermission=db.userPermission
- 
+const Users = db.users;
+const Permission = db.permissions;
+
 const createUser = async (req, res) => {
   try {
     const {
@@ -15,7 +14,13 @@ const createUser = async (req, res) => {
       permissions,
       role = null,
     } = req.body;
-    
+
+    const existingUser = await Users.findOne({ where: { email } });
+
+    if (existingUser) {
+      return res.status(400).send({ message: "Email already in use." });
+    }
+
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -25,7 +30,7 @@ const createUser = async (req, res) => {
       firstName,
       lastName,
       password: hashedPassword,
-      role:"staff",
+      role: "staff",
     };
 
     // Create the user in the database
@@ -68,6 +73,57 @@ const signInUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params; // Assuming the user ID is passed as a URL parameter
+    const {
+      email,
+      firstName,
+      lastName,
+      permissions,
+    } = req.body;
+
+    // Find the existing user by ID
+    const user = await Users.findByPk(id);
+
+    if (!user) {
+      return res.status(404).send({ message: "User not found." });
+    }
+
+    // Check if the new email is already in use by another user
+    if (email && email !== user.email) {
+      const existingUser = await Users.findOne({ where: { email } });
+      if (existingUser) {
+        return res.status(400).send({ message: "Email already in use." });
+      }
+    }
+
+    // Update the user's details (excluding password and role)
+    await user.update({
+      email,
+      firstName,
+      lastName,
+    });
+    // Update permissions if provided
+    if (permissions && permissions.length > 0) {
+      const permissionRecords = await Permission.findAll({
+        where: {
+          id: permissions, // Find permissions by IDs
+        },
+      });
+      if (permissionRecords.length > 0) {
+        await user.setPermissions(permissionRecords); // Use setPermissions to replace existing ones
+      }
+    }
+
+    res.status(200).send({ message: "User updated successfully." });
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Some error occurred while updating the User.",
+    });
+  }
+};
+
 const deleteUser = async (req, res) => {
   try {
     const { email } = req.body;
@@ -87,9 +143,32 @@ const deleteUser = async (req, res) => {
   }
 };
 
-const getUser = async (req, res) => {
+const getUserById = async (req, res) => {
   try {
-    const data = await Users.findAll({where:{role:"staff"}});
+    const userId = parseInt(req.params.id, 10);
+
+    const user = await Users.findByPk(userId, {
+      attributes: ["id", "email", "firstName", "lastName", "password"], // Include password field if necessary
+      include: {
+        model: Permission,
+        through: { attributes: [] }, // Exclude the join table attributes
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const getUsers = async (req, res) => {
+  try {
+    const data = await Users.findAll({ where: { role: "staff" } });
     res.send(data);
   } catch (error) {
     res.status(500).send({
@@ -98,4 +177,4 @@ const getUser = async (req, res) => {
     });
   }
 };
-module.exports = { createUser, getUser, signInUser, deleteUser };
+module.exports = { createUser, getUsers, signInUser, deleteUser, getUserById,updateUser };
