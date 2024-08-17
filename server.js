@@ -33,7 +33,9 @@ const itemFeaturesRoutes = require('./routes/itemFeatures');
 const materialInwardsRoutes = require('./routes/materialInwards');
 const usersRoutes = require('./routes/users');
 const vendorsRoutes = require('./routes/vendors');
-const permissionRoutes = require('./routes/permission')
+const permissionRoutes = require('./routes/permission');
+const projectContractorUnitAssignmentsRoutes = require('./routes/projectContractorUnitAssignment');
+const projectRoutes = require('./routes/project');
 
 // Use Routes
 app.use('/api/contractor-categories', contractorCategoriesRoutes);
@@ -48,6 +50,8 @@ app.use('/api/material-inwards',  materialInwardsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/vendors',  vendorsRoutes);
 app.use('/api/permissions',  permissionRoutes);
+app.use('/api/project-contractor-unit-assignments',  projectContractorUnitAssignmentsRoutes);
+app.use('/api/projects',  projectRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
