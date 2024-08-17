@@ -36,9 +36,18 @@ db.sequelize
   });
 const userRoutes = require("./app/routes/user.routes");
 const permissionRoutes = require("./app/routes/permission.routes");
+const contractorCategoriesRoutes = require('./app/routes/contractorCategories');
+const contractorsRoutes = require('./app/routes/contractors');
+const contractorUnitAssignmentsRoutes = require('./app/routes/contractorUnitAssignments');
+const contractorUnitsRoutes = require('./app/routes/contractorUnits');
 
 app.use("/api/users", userRoutes);
 app.use("/api/permissions", permissionRoutes);
+app.use('/api/contractor-categories', contractorCategoriesRoutes);
+app.use('/api/contractors',  contractorsRoutes);
+app.use('/api/contractor-unit-assignments',  contractorUnitAssignmentsRoutes);
+app.use('/api/contractor-units',  contractorUnitsRoutes);
+
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
