@@ -8,8 +8,8 @@ exports.createVendor = [
   async (req, res) => {
     try {
       const createData = req.body;
-      createData["createdAt"] = req.user.id;
-      createData["updatedAt"] = req.user.id;
+      createData["createdBy"] = req.user.id;
+      createData["updatedBy"] = req.user.id;
       const vendor = await Vendor.create(createData);
       res.status(201).json(vendor);
     } catch (error) {

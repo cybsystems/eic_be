@@ -7,8 +7,8 @@ exports.createContractorCategory = [
   async (req, res) => {
     try {
       const createData = req.body;
-      createData["createdAt"] = req.user.id;
-      createData["updatedAt"] = req.user.id;
+      createData["createdBy"] = req.user.id;
+      createData["updatedBy"] = req.user.id;
       const category = await ContractorCategory.create(createData);
       res.status(201).json(category);
     } catch (error) {

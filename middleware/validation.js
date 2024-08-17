@@ -24,22 +24,7 @@ exports.validateContractorUnit = [
   body('name')
     .isString().withMessage('Name must be a string')
     .notEmpty().withMessage('Name is required'),
-  body('contractorId')
-    .isInt().withMessage('Contractor ID must be an integer')
-    .custom(async (contractorId) => {
-      const contractor = await Contractor.findByPk(contractorId);
-      if (!contractor) {
-        throw new Error('Contractor ID does not exist');
-      }
-    }),
-  body('categoryId')
-    .isInt().withMessage('Category ID must be an integer')
-    .custom(async (categoryId) => {
-      const category = await ContractorCategory.findByPk(categoryId);
-      if (!category) {
-        throw new Error('Category ID does not exist');
-      }
-    })
+
 ];
 
 // Validation for ContractorUnitAssignment

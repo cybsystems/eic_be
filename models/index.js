@@ -49,7 +49,6 @@ Object.keys(db).forEach(modelName => {
       'ItemFeature',
       'Item',
       'Permission',
-      'Dispatch',
       'Vendor',
       'MaterialInward',
       'UserPermission',
@@ -58,6 +57,7 @@ Object.keys(db).forEach(modelName => {
       'Contractor',
       'ContractorUnitAssignment',
       'Site',
+      'Dispatch',
       'Stock'
     ];
 

@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     categoryId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       references: {
         model: 'ContractorCategories',
         key: 'id',
@@ -19,28 +18,28 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'CASCADE',
       onDelete: 'SET NULL',
     },
-    unitId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'ContractorUnits',
-        key: 'id',
-      },
-      onUpdate: 'CASCADE',
-      onDelete: 'SET NULL',
-    },
-    contactPerson: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    contactNumber: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    address: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
+    // unitId: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    //   references: {
+    //     model: 'ContractorUnits',
+    //     key: 'id',
+    //   },
+    //   onUpdate: 'CASCADE',
+    //   onDelete: 'SET NULL',
+    // },
+    // contactPerson: {
+    //   type: DataTypes.STRING,
+    //   allowNull: true,
+    // },
+    // contactNumber: {
+    //   type: DataTypes.STRING,
+    //   allowNull: true,
+    // },
+    // address: {
+    //   type: DataTypes.STRING,
+    //   allowNull: true,
+    // },
     createdBy: {
       type: DataTypes.INTEGER,
       allowNull: false,

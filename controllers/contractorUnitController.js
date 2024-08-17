@@ -7,8 +7,8 @@ exports.createContractorUnit = [
   async (req, res) => {
     try {
       const createData = req.body;
-      createData["createdAt"] = req.user.id;
-      createData["updatedAt"] = req.user.id;
+      createData["createdBy"] = req.user.id;
+      createData["updatedBy"] = req.user.id;
       const unit = await ContractorUnit.create(createData);
       res.status(201).json(unit);
     } catch (error) {
