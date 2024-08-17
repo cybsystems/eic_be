@@ -1,4 +1,4 @@
-const { Project } = require('../models');
+const { Project,ProjectContractorUnitAssignment,ContractorUnit } = require('../models');
 // const { validateProject, checkValidation } = require('../middleware/validation');
 
 // Create Project
@@ -29,9 +29,26 @@ exports.getAllProjects = async (req, res) => {
 // Get Project by ID
 exports.getProjectById = async (req, res) => {
   try {
-    const project = await Project.findByPk(req.params.id);
+    const { id:projectId } = req.params;
+
+    const project = await Project.findByPk(projectId);
+    const assignments = await ProjectContractorUnitAssignment.findAll({
+      where: { projectId },
+      include: [
+        {
+          model: ContractorUnit,
+          attributes: ['id', 'name'],
+        },
+      ],
+    });
+    const units = assignments.map((assignment) => ({
+      id: assignment.ContractorUnit.id,
+      name: assignment.ContractorUnit.name,
+    }));
+
+
     if (project) {
-      res.status(200).json(project);
+      res.status(200).json({name:project.name,units});
     } else {
       res.status(404).json({ message: 'Project not found' });
     }
