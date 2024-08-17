@@ -25,6 +25,16 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
     },
+    projectId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Projects',
+        key: 'id',
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    },
     createdBy: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -58,6 +68,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   ContractorUnitAssignment.associate = function(models) {
+    ContractorUnitAssignment.belongsTo(models.Project, { foreignKey: 'projectId' });
     ContractorUnitAssignment.belongsTo(models.Contractor, { foreignKey: 'contractorId' });
     ContractorUnitAssignment.belongsTo(models.ContractorUnit, { foreignKey: 'contractorUnitId' });
     ContractorUnitAssignment.belongsTo(models.UserTable, { as: 'creator', foreignKey: 'createdBy' });

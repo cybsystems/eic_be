@@ -1,16 +1,32 @@
 const { ContractorUnitAssignment, Contractor, ContractorUnit } = require('../models');
 const { validateContractorUnitAssignment, checkValidation } = require('../middleware/validation');
+const sequelize = require("../models").sequelize; // Assuming you're using sequelize instance for transactions
 
 exports.createContractorUnitAssignment = [
-  ...validateContractorUnitAssignment,
-  checkValidation,
+  // ...validateContractorUnitAssignment,
+  // checkValidation,
   async (req, res) => {
     try {
-      const createData = req.body;
-      createData["createdAt"] = req.user.id;
-      createData["updatedAt"] = req.user.id;
-      const assignment = await ContractorUnitAssignment.create(createData);
-      res.status(201).json(assignment);
+      const { projectId, units } = req.body; // Expecting projectId and an array of units in the request body
+      const userId = req.user.id; // Assuming user information is available in the request
+      if (!Array.isArray(units) || units.length === 0) {
+        return res
+          .status(400)
+          .json({ message: "Units should be a non-empty array" });
+      }
+      const transaction = await sequelize.transaction(); // Start a transaction
+      const contractorUnitsAssignments = await ContractorUnitAssignment.bulkCreate(
+        units.map((unit) => ({
+          ...unit,
+          createdBy: userId,
+          updatedBy: userId,
+          projectId
+        })),
+        { transaction }
+      );
+      await transaction.commit(); // Commit the transaction if everything went fine
+
+      res.status(201).json(contractorUnitsAssignments);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
