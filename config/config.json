@@ -15,17 +15,31 @@
     }
   },
   "test": {
-    "username": "postgres",
-    "password": "root123",
-    "database": "database_test",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
+    "username": "eic_db_user",
+    "password": "Ko9GaEjimP373DEBmQNzBjsCIgBY2b6Q",
+    "database": "eic_db",
+    "host": "dpg-cqv0pso8fa8c73fd7bo0-a.oregon-postgres.render.com",
+    "dialect": "postgres",
+    "dialectOptions":{
+      "ssl":{
+        
+        "require":true,
+        "rejectUnauthorized":false
+      }
+    }
   },
   "production": {
-    "username": "postgres",
-    "password": "root123",
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
+    "username": "eic_db_user",
+    "password": "Ko9GaEjimP373DEBmQNzBjsCIgBY2b6Q",
+    "database": "eic_db",
+    "host": "dpg-cqv0pso8fa8c73fd7bo0-a.oregon-postgres.render.com",
+    "dialect": "postgres",
+    "dialectOptions":{
+      "ssl":{
+        
+        "require":true,
+        "rejectUnauthorized":false
+      }
+    }
   }
 }
