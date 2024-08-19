@@ -19,7 +19,6 @@ exports.createWorkOrder = [
 exports.getAllWorkOrders = async (req, res) => {
   try {
     const workOrders = await WorkOrder.findAll({
-      attributes: ["title"],
       include: [
         {
           model: Project,
