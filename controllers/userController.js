@@ -9,7 +9,8 @@ exports.createUserTable = [
   checkValidation,
   async (req, res) => {
     try {
-      const user = await UserTable.create(req.body);
+      console.log(req.body)
+      const user = await UserTable.create({...req.body,username:req.body.email});
       res.status(201).json(user);
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -76,10 +77,10 @@ exports.deleteUserTable = async (req, res) => {
 };
 
 exports.register = async (req, res) => {
-  const { email, username, password } = req.body;
+  const { email, username, password,firstName,lastName } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new UserTable({ email, username, password: hashedPassword });
+    const newUser = new UserTable({ email, username,firstName,lastName, password: hashedPassword ,username:email});
     await newUser.save();
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
