@@ -1,17 +1,23 @@
 const { MaterialInward, Item, Contractor, Vendor } = require('../models');
 const { validateMaterialInward, checkValidation } = require('../middleware/validation');
-
-// Create MaterialInward
 exports.createMaterialInward = [
-  ...validateMaterialInward,
-  checkValidation,
   async (req, res) => {
     try {
-      const createData = req.body;
-      createData["createdAt"] = req.user.id;
-      createData["updatedAt"] = req.user.id;
-      const materialInward = await MaterialInward.create(createData);
-      res.status(201).json(materialInward);
+      const { inwards } = req.body; // Assuming `inwards` is an array of material inward data
+      const userId = req.user.id;
+
+      // Add createdBy and updatedBy fields to each item
+      const inwardsWithUser = inwards.map((inward) => {
+        const item={...inward,vendorId:inward.vendorId||null,contractorId:inward.contractorId||null}
+        delete item.contractorOrVendor
+        return {...item,createdBy:userId,updatedBy:userId}
+       
+      });
+
+      // Use bulkCreate to insert multiple records at once
+      const materialInwards = await MaterialInward.bulkCreate(inwardsWithUser);
+
+      res.status(201).json(materialInwards);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     firm: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     name: {
       type: DataTypes.STRING,
