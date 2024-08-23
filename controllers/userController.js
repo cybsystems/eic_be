@@ -1,4 +1,4 @@
-const { UserTable } = require('../models');
+const { UserTable, WareHouse } = require('../models');
 const { validateUserTable, checkValidation } = require('../middleware/validation');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -32,7 +32,15 @@ exports.getAllUserTable = async (req, res) => {
 // Get UserTable by ID
 exports.getUserTableById = async (req, res) => {
   try {
-    const user = await UserTable.findByPk(req.params.id);
+    const user = await UserTable.findByPk(req.params.id, {
+      include: [
+        {
+          model: WareHouse,
+          as: 'wareHouse',  // This should match the alias used in the association
+        }
+      ]
+    });
+
     if (user) {
       res.status(200).json(user);
     } else {
@@ -42,6 +50,28 @@ exports.getUserTableById = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+exports.getUserInfo=async(req,res)=>{
+  try {
+    console.log(req.user)
+    const user = await UserTable.findByPk(req.user.id, {
+      include: [
+        {
+          model: WareHouse,
+          as: 'wareHouse',  // This should match the alias used in the association
+        }
+      ]
+    });
+
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ message: 'UserTable not found' });
+    }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
 
 // Update UserTable
 exports.updateUserTable = [

@@ -60,7 +60,9 @@ Object.keys(db).forEach(modelName => {
       'Dispatch',
       'Stock',
       'WorkOrder',
-      'WareHouse'
+      'WareHouse',
+      'MaterialIssue',
+      'MaterialIssueItem',
     ];
 
     for (const modelName of modelCreationOrder) {

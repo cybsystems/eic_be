@@ -37,6 +37,8 @@ const permissionRoutes = require('./routes/permission');
 const projectContractorUnitAssignmentsRoutes = require('./routes/projectContractorUnitAssignment');
 const projectRoutes = require('./routes/project');
 const workOrderRoutes=require('./routes/workOrders')
+const wareHouseRoutes=require('./routes/wareHouse')
+const materialIssueRoutes=require('./routes/materialIssue')
 
 // Use Routes
 app.use('/api/contractor-categories', contractorCategoriesRoutes);
@@ -54,6 +56,9 @@ app.use('/api/permissions',  permissionRoutes);
 app.use('/api/project-contractor-unit-assignments',  projectContractorUnitAssignmentsRoutes);
 app.use('/api/projects',  projectRoutes);
 app.use('/api/workorders',  workOrderRoutes);
+app.use('/api/warehouses',wareHouseRoutes)
+app.use('/api/material-issue',materialIssueRoutes)
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {

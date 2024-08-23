@@ -72,6 +72,14 @@ module.exports = (sequelize, DataTypes) => {
     UserTable.hasMany(models.WareHouse, { foreignKey: "updatedBy" });
 
 
+    UserTable.hasMany(models.MaterialIssue, { foreignKey: "createdBy" });
+    UserTable.hasMany(models.MaterialIssue, { foreignKey: "updatedBy" });
+
+
+    UserTable.hasMany(models.MaterialIssueItem, { foreignKey: "createdBy" });
+    UserTable.hasMany(models.MaterialIssueItem, { foreignKey: "updatedBy" });
+
+
     UserTable.belongsTo(models.WareHouse, { as: 'wareHouse', foreignKey: 'wareHouseId' });
 
 
