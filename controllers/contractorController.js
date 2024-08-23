@@ -7,7 +7,6 @@ exports.createContractor = [
   async (req, res) => {
     try {
       const createData = req.body;
-      console.log(req.user)
       createData["createdBy"] = req.user.id;
       createData["updatedBy"] = req.user.id;
       const contractor = await Contractor.create(createData);

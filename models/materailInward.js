@@ -39,6 +39,16 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
       },
+      wareHouseId: {
+        type: DataTypes.INTEGER,
+        allowNull: true, // Nullable field
+        references: {
+          model: 'WareHouses', // Reference to Vendor model
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+      },
       createdBy: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -77,6 +87,8 @@ module.exports = (sequelize, DataTypes) => {
       MaterialInward.belongsTo(models.Vendor, { foreignKey: 'vendorId', as: 'vendor' });
       MaterialInward.belongsTo(models.UserTable, { as: 'creator', foreignKey: 'createdBy' });
       MaterialInward.belongsTo(models.UserTable, { as: 'updater', foreignKey: 'updatedBy' });
+      MaterialInward.belongsTo(models.WareHouse, { foreignKey: 'wareHouseId', as: 'warehouse' });
+
     };
   
     return MaterialInward;

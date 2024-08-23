@@ -11,7 +11,6 @@ const authenticateToken = (req, res, next) => {
 
   jwt.verify(token, "ntseic", async (err, user) => {
     if (err) return res.status(403).json({ message: 'Token is not valid' });
-    console.log(user)
     try {
       const foundUser = await UserTable.findByPk(user.id);
       if (!foundUser) return res.status(404).json({ message: 'User not found' });

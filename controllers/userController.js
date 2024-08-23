@@ -9,7 +9,6 @@ exports.createUserTable = [
   checkValidation,
   async (req, res) => {
     try {
-      console.log(req.body)
       const user = await UserTable.create({...req.body,username:req.body.email});
       res.status(201).json(user);
     } catch (error) {
@@ -22,7 +21,6 @@ exports.createUserTable = [
 exports.getAllUserTable = async (req, res) => {
   try {
     const users = await UserTable.findAll();
-    console.log(users)
     res.status(200).json(users);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -53,7 +51,6 @@ exports.getUserTableById = async (req, res) => {
 
 exports.getUserInfo=async(req,res)=>{
   try {
-    console.log(req.user)
     const user = await UserTable.findByPk(req.user.id, {
       include: [
         {
@@ -107,10 +104,10 @@ exports.deleteUserTable = async (req, res) => {
 };
 
 exports.register = async (req, res) => {
-  const { email, username, password,firstName,lastName } = req.body;
+  const { email,  password,firstName,lastName } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new UserTable({ email, username,firstName,lastName, password: hashedPassword ,username:email});
+    const newUser = new UserTable({ email, firstName,lastName, password: hashedPassword ,username:email});
     await newUser.save();
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
@@ -120,17 +117,14 @@ exports.register = async (req, res) => {
 
 // Login user
 exports.login = async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
   try {
-    const user = await UserTable.findOne({ username });
-    console.log(user.dataValues)
-    const newUser = user.dataValues;
-    if (!newUser) return res.status(404).json({ message: 'User not found' });
-
+    const user = await UserTable.findOne({ where: { email: email } });
+    if (!user) return res.status(404).json({ message: 'User not found' });
     let isMatch = false
-    isMatch = await bcrypt.compare(password, newUser.password);
+    isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
-    const token = jwt.sign({ id: newUser.id }, "ntseic");
+    const token = jwt.sign({ id: user.id }, "ntseic");
     res.json({token});
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -5,6 +5,7 @@ const authenticateToken = require('../middleware/auth')
 
 
 router.post('/', authenticateToken, materialIssueController.createMaterialIssue);
- 
+router.get('/material-issue-items-for-warehouse/:id', authenticateToken, materialIssueController.getMaterialIssueItemsForWarehouse);
+
  
 module.exports = router;

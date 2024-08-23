@@ -5,6 +5,7 @@ const wareHouseController = require('../controllers/wareHouseController');
 
 
 router.get('/', authenticateToken, wareHouseController.getAllWareHouses);
+router.get('/material-issue-warehouse', authenticateToken, wareHouseController.getWarehusesFromMaterialIssue);
 
  
 module.exports = router;
