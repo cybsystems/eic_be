@@ -1,4 +1,4 @@
-const { Dispatch } = require('../models');
+const { Dispatch,Items } = require('../models');
 const { validateDispatch, checkValidation } = require('../middleware/validation');
 const { updateWarehouseStock } = require("../utils/items");
 
@@ -8,11 +8,23 @@ exports.createDispatch = [
     try {
       const { contractorUnitAssignmentId, items } = req.body;
       const userId = req.user.id;
+
+      for (const item of items) {
+        const existingItem = await Items.findOne({
+          where: { id: item.itemId },
+        });
+        if (!existingItem) {
+          return res
+            .status(400)
+            .json({ error: `Item with  ${existingItem.item} does not exist` });
+        }
+      }
+
       const dispatchData=items.map((i)=>{
         return ({...i,contractorUnitAssignmentId,createdBy: userId, updatedBy: userId })
       })
       const dispatches=await Dispatch.bulkCreate(dispatchData)
-      await updateWarehouseStock(dispatchData,"remove");
+      await updateWarehouseStock(dispatchData,"subtract");
 
       res.status(201).json({dispatches});
     } catch (error) {
