@@ -2,7 +2,8 @@ const {
   MaterialInward,
   UserTable,
   MaterialIssue,
-  WareHouseStockItem
+  WareHouseStockItem,
+  Items
 } = require("../models");
 const {
   validateMaterialInward,
@@ -79,12 +80,20 @@ exports.createMaterialInward = [
 // Get all MaterialInwards
 exports.getAllMaterialInwards = async (req, res) => {
   try {
-    const materialInwards = await MaterialInward.findAll({
-      include: ["item", "contractor", "vendor", "creator", "updater"],
+    // Fetch all items with their quantities
+    const itemsWithQuantities = await WareHouseStockItem.findAll({
+      include: [{
+        model: Items,
+        as: 'item', // Use the alias defined in the association
+        attributes: ['id', 'item'], // Adjust attributes as needed
+      }],
+      attributes: ['itemId', 'quantity'], // Include itemId and quantity in the result
     });
-    res.status(200).json(materialInwards);
+
+    // Respond with the fetched data
+    res.status(200).json(itemsWithQuantities);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
