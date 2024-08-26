@@ -75,10 +75,13 @@ exports.getProjectDetails = async (req, res) => {
         {
           model: Contractor,
           attributes: ["id", "name","email","phoneNumber"],
+          as:'contractor'
+
         },
         {
           model: ContractorUnit, // Include the ContractorUnit model
           attributes: ["id", "name"], // Include the necessary attributes
+          as:'contractorUnit'
         },
       ],
     });

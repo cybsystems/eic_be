@@ -30,11 +30,14 @@ exports.getAllWorkOrders = async (req, res) => {
             {
               model: ContractorUnit,
               attributes: ["name"], // Unit Name
+              as:'contractorUnit'
               
             },
             {
               model:Contractor,
               attributes: ["name"], 
+              as:'contractor'
+
             }
           ],
         },
@@ -101,10 +104,13 @@ exports.getWorkOrderById=async(req,res)=>{
             {
               model: ContractorUnit,
               attributes: ["name"], // Unit Name
+              as:'contractorUnit',
             },
             {
               model: Contractor,
               attributes: ["name"], // Contractor Name
+              as:'contractor',
+
             }
           ],
         },
