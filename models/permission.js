@@ -7,11 +7,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       name: {
         type: DataTypes.STRING,
-        allowNull: false,
+        
       },
       createdBy: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        
         references: {
           model: 'UserTables', // Reference to UserTable table
           key: 'id',
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       updatedBy: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        
         references: {
           model: 'UserTables', // Reference to UserTable table
           key: 'id',
@@ -31,12 +31,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       createdAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        
         defaultValue: DataTypes.NOW,
       },
       updatedAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        
         defaultValue: DataTypes.NOW,
       }
     });

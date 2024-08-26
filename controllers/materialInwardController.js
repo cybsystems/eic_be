@@ -2,12 +2,41 @@ const {
   MaterialInward,
   UserTable,
   MaterialIssue,
+  WareHouseStockItem
 } = require("../models");
 const {
   validateMaterialInward,
   checkValidation,
 } = require("../middleware/validation");
 const { Sequelize } = require("sequelize");
+
+async function updateWarehouseStock(items) {
+  for (const item of items) {
+    const existingStock = await WareHouseStockItem.findOne({
+      where: {
+        itemId: item.itemId, // Check based on itemId only, without warehouseId
+        // Assuming you may want to track stock per warehouse
+      },
+    });
+
+    if (existingStock) {
+      // Update the existing stock quantity
+      await existingStock.update({
+        quantity: existingStock.quantity + item.quantity, // Increase quantity
+      });
+    } else {
+      // Create a new stock item
+      await WareHouseStockItem.create({
+        itemId: item.itemId,
+        quantity: item.quantity, // Set the initial quantity
+        createdBy: item.createdBy,
+        updatedBy: item.updatedBy,
+      });
+    }
+  }
+}
+
+ 
 exports.createMaterialInward = [
   async (req, res) => {
     try {
@@ -28,6 +57,8 @@ exports.createMaterialInward = [
 
       // Use bulkCreate to insert multiple records at once
       const materialInwards = await MaterialInward.bulkCreate(inwardsWithUser);
+      await updateWarehouseStock(inwardsWithUser);
+
       if (inwards[0].wareHouseId) {
         const user = await UserTable.findByPk(userId);
         const userWarehouseId = user.wareHouseId;
@@ -35,10 +66,7 @@ exports.createMaterialInward = [
           where: Sequelize.and(
             { fromWareHouseId: inwards[0].wareHouseId },
             { toWareHouseId: userWarehouseId },
-          )
-          
-          
-           
+          ) 
         });
       }
       res.status(201).json(materialInwards);
