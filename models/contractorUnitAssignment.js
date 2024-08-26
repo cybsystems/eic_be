@@ -68,9 +68,9 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   ContractorUnitAssignment.associate = function(models) {
-    ContractorUnitAssignment.belongsTo(models.Project, { foreignKey: 'projectId' });
-    ContractorUnitAssignment.belongsTo(models.Contractor, { foreignKey: 'contractorId' });
-    ContractorUnitAssignment.belongsTo(models.ContractorUnit, { foreignKey: 'contractorUnitId' });
+    ContractorUnitAssignment.belongsTo(models.Project, {as:'project', foreignKey: 'projectId' });
+    ContractorUnitAssignment.belongsTo(models.Contractor, {as:'contractor', foreignKey: 'contractorId' });
+    ContractorUnitAssignment.belongsTo(models.ContractorUnit, {as:'contractorUnit', foreignKey: 'contractorUnitId' });
     ContractorUnitAssignment.belongsTo(models.UserTable, { as: 'creator', foreignKey: 'createdBy' });
     ContractorUnitAssignment.belongsTo(models.UserTable, { as: 'updater', foreignKey: 'updatedBy' });
   };

@@ -39,6 +39,8 @@ const projectRoutes = require('./routes/project');
 const workOrderRoutes=require('./routes/workOrders')
 const wareHouseRoutes=require('./routes/wareHouse')
 const materialIssueRoutes=require('./routes/materialIssue')
+const reportsRoutes=require('./routes/reportRoutes')
+
 
 // Use Routes
 app.use('/api/contractor-categories', contractorCategoriesRoutes);
@@ -58,6 +60,9 @@ app.use('/api/projects',  projectRoutes);
 app.use('/api/workorders',  workOrderRoutes);
 app.use('/api/warehouses',wareHouseRoutes)
 app.use('/api/material-issue',materialIssueRoutes)
+app.use('/api/reports',reportsRoutes)
+
+
 
 
 // Error handling middleware
