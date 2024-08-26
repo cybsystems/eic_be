@@ -1,17 +1,20 @@
 const { Dispatch } = require('../models');
 const { validateDispatch, checkValidation } = require('../middleware/validation');
+const { updateWarehouseStock } = require("../utils/items");
 
 // Create Dispatch
 exports.createDispatch = [
-  ...validateDispatch,
-  checkValidation,
   async (req, res) => {
     try {
-      const createData = req.body;
-      createData["createdAt"] = req.user.id;
-      createData["updatedAt"] = req.user.id;
-      const dispatch = await Dispatch.create(createData);
-      res.status(201).json(dispatch);
+      const { contractorUnitAssignmentId, items } = req.body;
+      const userId = req.user.id;
+      const dispatchData=items.map((i)=>{
+        return ({...i,contractorUnitAssignmentId,createdBy: userId, updatedBy: userId })
+      })
+      const dispatches=await Dispatch.bulkCreate(dispatchData)
+      await updateWarehouseStock(dispatchData,"remove");
+
+      res.status(201).json({dispatches});
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
