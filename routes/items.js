@@ -5,6 +5,7 @@ const authenticateToken = require('../middleware/auth')
 
 router.post('/', authenticateToken, itemController.createItem);
 router.get('/', authenticateToken, itemController.getAllItems);
+router.get('/count', authenticateToken, itemController.getAllItemsCount);
 router.get('/:id', authenticateToken, itemController.getItemById);
 router.put('/:id', authenticateToken, itemController.updateItem);
 router.delete('/:id', authenticateToken, itemController.deleteItem);
