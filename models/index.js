@@ -47,7 +47,7 @@ Object.keys(db).forEach(modelName => {
       'UserTable',
       'ItemCategory',
       'ItemFeature',
-      'Item',
+      'Items',
       'Permission',
       'Vendor',
       'MaterialInward',

@@ -10,7 +10,7 @@ exports.createItem = [
       const createData = req.body;
       createData["createdBy"] = req.user.id;
       createData["updatedBy"] = req.user.id;
-      const item = await Items.create(createData);
+      const item = await Items.create({ ...createData, quantity: 0 });
       res.status(201).json(item);
     } catch (error) {
       res.status(400).json({ error: error.message });

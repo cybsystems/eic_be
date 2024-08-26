@@ -13,9 +13,9 @@ const { Sequelize } = require("sequelize");
 
 async function updateWarehouseStock(items) {
   for (const item of items) {
-    const existingStock = await WareHouseStockItem.findOne({
+    const existingStock = await Items.findOne({
       where: {
-        itemId: item.itemId, // Check based on itemId only, without warehouseId
+        id: item.itemId, // Check based on itemId only, without warehouseId
         // Assuming you may want to track stock per warehouse
       },
     });
@@ -28,7 +28,7 @@ async function updateWarehouseStock(items) {
     } else {
       // Create a new stock item
       await WareHouseStockItem.create({
-        itemId: item.itemId,
+        id: item.itemId,
         quantity: item.quantity, // Set the initial quantity
         createdBy: item.createdBy,
         updatedBy: item.updatedBy,
@@ -81,17 +81,10 @@ exports.createMaterialInward = [
 exports.getAllMaterialInwards = async (req, res) => {
   try {
     // Fetch all items with their quantities
-    const itemsWithQuantities = await WareHouseStockItem.findAll({
-      include: [{
-        model: Items,
-        as: 'item', // Use the alias defined in the association
-        attributes: ['id', 'item'], // Adjust attributes as needed
-      }],
-      attributes: ['itemId', 'quantity'], // Include itemId and quantity in the result
-    });
+    const items = await Items.findAll();
 
     // Respond with the fetched data
-    res.status(200).json(itemsWithQuantities);
+    res.status(200).json(items);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

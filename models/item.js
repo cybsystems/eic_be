@@ -19,6 +19,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    quantity:{
+      type: DataTypes.INTEGER,
+    },
     featureId: {
       type: DataTypes.INTEGER,
       allowNull: false,
